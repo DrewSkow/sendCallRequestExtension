@@ -1,9 +1,11 @@
 let isOn;
+console.log("start")
 
 chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
 
 chrome.storage.onChanged.addListener((ch, na) => {
     if(ch.switchCallReq){
+        console.log(ch)
         chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
     }
 });

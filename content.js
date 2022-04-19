@@ -1,4 +1,3 @@
-
 chrome.storage.local.get("switchCallReq", v => v.switchCallReq && generalSrc());
 
 const generalSrc = () => {
@@ -337,10 +336,21 @@ const generalSrc = () => {
 		});//end ajax
 	}
 
+	const setGMTTime = (offset) => {
+		let utc;
+		const d = new Date();
+		localTime = d.getTime();
+		localOffset = d.getTimezoneOffset() * 60000;
+		utc = localTime + localOffset;
+		const nd = new Date(utc + (3600000*offset));
+		utc = new Date(utc);
+		return utc
+	}
+
 	const setTime = (data) => {
 		document.getElementById("timezone").options[1].selected=true; 
 		
-		const time = new Date();
+		const time = setGMTTime(0);
 		time.setMonth(time.getMonth()+6);
 
 		document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
@@ -370,8 +380,7 @@ const generalSrc = () => {
 		setTimeout(()=>{
 			document.forms[0].action = "add.php?act=saveandsubmit",
 			document.forms[0].submit();
-		}, 3000)
-		
+		}, 3000)	
 	}
 }
 
