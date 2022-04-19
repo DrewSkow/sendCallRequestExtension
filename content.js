@@ -1,11 +1,11 @@
 chrome.storage.local.get("switchCallReq", v => v.switchCallReq && generalSrc());
+const port = chrome.runtime.connect({name: "exchangeData"});
 
+console.log("scripStart")
 
 const generalSrc = () => {
 
-	const port = chrome.runtime.connect({name: "exchangeData"});
-
-	if(document.location.href == "http://www.charmdate.com/clagt/woman/women_profiles_allow_edit.php"){
+	if(document.location.href == 'http://www.charmdate.com/clagt/woman/women_profiles_allow_edit.php'){
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
 	}
 

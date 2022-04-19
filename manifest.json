@@ -6,7 +6,7 @@
     "author": "Drew Skow",
     "content_scripts": [
         {
-            "matches" : ["https://www.charmdate.com/clagt/*"],
+            "matches" : ["http://www.charmdate.com/clagt/*","https://www.charmdate.com/clagt/*"],
             "js"  : ["jquery.js","content.js"],
             "run_at": "document_end"
         }
