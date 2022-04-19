@@ -22,7 +22,6 @@
         "service_worker" : "background.js"
     },
 
-
     "permissions" : [
         "activeTab",
         "tabs",
@@ -31,10 +30,6 @@
     ],
     "host_permissions": [
         "http://www.charmdate.com/*"
-    ],
-    "web_accessible_resources": [{
-        "resources": ["injected.js"],
-        "matches": ["http://www.charmdate.com/*"]
-    }]
+    ]
 }
 

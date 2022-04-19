@@ -1,10 +1,13 @@
 let isOn;
 
+chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
+
 chrome.storage.onChanged.addListener((ch, na) => {
-    if(ch.switchCallReq?true:false){
+    if(ch.switchCallReq){
         chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
     }
 });
+
 
 let data;
 let i = 1;
@@ -16,7 +19,8 @@ let dataForSend = {}
 const script = async (p) => {
 
     if(p.name == "exchangeData"){    
-        p.onMessage.addListener(msg=>{
+        p.onMessage.addListener(msg=>{ 
+        console.log(isOn)
             if(isOn){
                 if(msg.method == "sendData"){
                     data = msg.data;
@@ -53,7 +57,4 @@ const script = async (p) => {
     }
 }
 chrome.runtime.onConnect.addListener(p=>script(p))
-
-// минут должно быть 60
-// сделать переключение часов
-// 
+ 
