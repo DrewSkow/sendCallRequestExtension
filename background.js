@@ -12,6 +12,7 @@ const script = async (p) => {
             if(msg.method == "sendData"){
                 data = msg.data;
                 hourZone = 1;
+                p.postMessage({method: "dataNotReady"})
             }
             if(msg.method == "sended"){
                 sended++;
