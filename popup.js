@@ -1,8 +1,9 @@
 const btn = document.getElementById("sendButton");
-const port = chrome.runtime.connect({name: "exchangeData"});
 const womenId = document.getElementById("i_w_id");
 const menData = document.getElementById("i_m_id");
 const quantity = document.getElementById("req_quantity");
+
+const port = chrome.runtime.connect({name: "exchangeData"});
 
 const switchButton = document.getElementById("switchButton");
 chrome.storage.local.get("switchCallReq", v => switchButton.checked = v.switchCallReq)

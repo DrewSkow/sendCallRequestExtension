@@ -1,7 +1,5 @@
-let isOn;
-chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq); 
 
-isOn && generalSrc();
+chrome.storage.local.get("switchCallReq", v => v.switchCallReq && generalSrc());
 
 const generalSrc = () => {
 

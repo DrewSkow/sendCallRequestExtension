@@ -6,7 +6,7 @@
     "author": "Drew Skow",
     "content_scripts": [
         {
-            "matches" : ["http://www.charmdate.com/clagt/lovecall/*"],
+            "matches" : ["http://www.charmdate.com/clagt/*"],
             "js"  : ["jquery.js","content.js"],
             "run_at": "document_end"
         }
