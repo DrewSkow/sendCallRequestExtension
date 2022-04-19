@@ -4,6 +4,9 @@ const womenId = document.getElementById("i_w_id");
 const menData = document.getElementById("i_m_id");
 const quantity = document.getElementById("req_quantity");
 
+const switchButton = document.getElementById("switchButton");
+chrome.storage.local.get("switchCallReq", v => switchButton.checked = v.switchCallReq)
+
 chrome.storage.local.get("wId", v => womenId.value = v.wId||"");
 chrome.storage.local.get("mId", v => menData.value = v.mId||"");
 chrome.storage.local.get("quantity", v => quantity.value = +v.quantity||0);
@@ -26,3 +29,9 @@ const handleClick = async () => {
 }
 
 btn.addEventListener('click', handleClick)
+
+const switchClick = (e) => {
+    chrome.storage.local.set({switchCallReq: e.target.checked})
+}
+
+switchButton.addEventListener("click", switchClick);
