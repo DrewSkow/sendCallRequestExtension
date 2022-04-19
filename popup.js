@@ -17,16 +17,20 @@ menData.addEventListener('input', e=>chrome.storage.local.set({mId:e.target.valu
 quantity.addEventListener('input', e=>chrome.storage.local.set({quantity:e.target.value}));
 
 const handleClick = async () => {
+    await chrome.tabs.query({url:"https://www.charmdate.com/clagt/lovecall/add.php"}, v =>{
+        v.length==0 && port.postMessage({method: "createTab"});
+        v.length != 0 && port.postMessage({method: "switchOnTab", tabid: v[0].id})
+    })
     const menId = menData.value.split(",");
     const wId = womenId.value;
     const qV = quantity.value
     const data = {menId, wId, qV}
     if(!!wId && !!menId && !!qV){
-       port.postMessage({method: "sendData", data})
+        await port.postMessage({method: "sendData", data})
     } else{
         alert("одно из полей не заполнено")
     }
-   chrome.storage.local.remove(["wId", "mId", "quantity"]);
+   await chrome.storage.local.remove(["wId", "mId", "quantity"]);
 }
 
 btn.addEventListener('click', handleClick)

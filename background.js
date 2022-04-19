@@ -22,8 +22,13 @@ const script = async (p) => {
 
     if(p.name == "exchangeData"){    
         p.onMessage.addListener(msg=>{ 
-        console.log(isOn)
             if(isOn){
+                if(msg.method == "createTab"){
+                    chrome.tabs.create({active: false, index:5, url:"https://www.charmdate.com/clagt/lovecall/add.php"})
+                }
+                if(msg.method == "switchOnTab") {
+                    chrome.tabs.reload(msg.tabid)
+                }
                 if(msg.method == "sendData"){
                     data = msg.data;
                     hourZone = 1;

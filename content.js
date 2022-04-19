@@ -1,5 +1,6 @@
 chrome.storage.local.get("switchCallReq", v => v.switchCallReq && generalSrc());
 
+
 const generalSrc = () => {
 
 	const port = chrome.runtime.connect({name: "exchangeData"});
