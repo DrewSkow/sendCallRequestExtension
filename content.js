@@ -1,8 +1,6 @@
 chrome.storage.local.get("switchCallReq", v => v.switchCallReq && generalSrc());
 const port = chrome.runtime.connect({name: "exchangeData"});
 
-console.log("scripStart")
-
 const generalSrc = () => {
 
 	if(document.location.href == 'http://www.charmdate.com/clagt/woman/women_profiles_allow_edit.php'){
@@ -25,6 +23,9 @@ const generalSrc = () => {
 					sendReq(msg.dataForSend);
 					check++;
 				}
+			}
+			case ("daysError") : {
+				alert("Было проверено 60 дней до текущей даты")
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
@@ -351,14 +352,17 @@ const generalSrc = () => {
 	const setTime = (data) => {
 		document.getElementById("timezone").options[1].selected=true; 
 		
+
+		const daymill = 24*60*60*1000;
 		const time = setGMTTime(0);
 		time.setMonth(time.getMonth()+6);
+		time.setTime(time.getTime()-(daymill*data.day));
 
 		document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
-		document.getElementById("callh").options[data.hourZone].selected=true;
+		document.getElementById("callh").options[data.hour].selected=true;
 
 		const minutes = document.getElementById("callm");
-		minutes.append(new Option (checkZeroBefore("d", checkMinutes(data.i)), checkZeroBefore("d", checkMinutes(data.i)), false, true));
+		minutes.append(new Option (checkZeroBefore("d", checkMinutes(data.minute)), checkZeroBefore("d", checkMinutes(data.minute)), false, true));
 		getCallTime("LOCAL")
 
 		document.getElementById("womanphone").value="+380955200000"

@@ -5,15 +5,16 @@ chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
 
 chrome.storage.onChanged.addListener((ch, na) => {
     if(ch.switchCallReq){
-        console.log(ch)
         chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
     }
 });
 
-
 let data;
-let i = 1;
-let hourZone = 1;
+const time = {
+    minute: 59,
+    hour: 23,
+    day: 0,
+}
 let sended = 0;
 let maxSend;
 let dataForSend = {}
@@ -31,7 +32,7 @@ const script = async (p) => {
                 }
                 if(msg.method == "sendData"){
                     data = msg.data;
-                    hourZone = 1;
+                    time.hour = 1;
                     p.postMessage({method: "dataNotReady"})
                 }
                 if(msg.method == "sended"){
@@ -40,21 +41,23 @@ const script = async (p) => {
                 if(msg.method == "askData"){
                     if(!!data){
                         maxSend=data.qV
-                        if(i==60){i=1, hourZone++}
-                        if(hourZone==24){hourZone=1}
+                        if(time.minute==60){time.minute=1, time.hour++}
+                        if(time.hour==24){time.hour=1; time.day++}
+                        if(time.day==61){p.postMessage({method: "daysError"}); return}
                         if(data.menId.length>0 && sended<maxSend){
                             dataForSend = {
                                 wId: data.wId,
                                 mId: data.menId[0],
-                                i: i,
-                                hourZone,
+                                minute: time.minute,
+                                hour: time.hour
                             }            
                             p.postMessage({method: "data", dataForSend});
-                            i++;
+                            time.minute++;
                         } else if(data.menId.length>0 && sended==maxSend){
                             data.menId.shift();
-                            hourZone++;
-                            i=1;
+                            time.day=0;
+                            time.hour=23;
+                            time.minute=59;
                             sended=0;
                         }
                     } else {p.postMessage({method: "dataNotReady"})}
@@ -65,3 +68,8 @@ const script = async (p) => {
 }
 chrome.runtime.onConnect.addListener(p=>script(p))
  
+
+// сделать ввод даты для мужчины, -2 дня,
+// выпадающий каледарь,
+// продолжать у мужиков после смены мужчины,
+// 

@@ -18,7 +18,6 @@ quantity.addEventListener('input', e=>chrome.storage.local.set({quantity:e.targe
 
 const handleClick = async () => {
     await chrome.tabs.query({url:"http://www.charmdate.com/clagt/lovecall/add.php"}, v =>{
-        console.log(v.length)
         v.length == 0 && port.postMessage({method: "createTab"});
         v.length != 0 && port.postMessage({method: "switchOnTab", tabid: v[0].id})
     })
