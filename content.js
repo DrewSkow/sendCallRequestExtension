@@ -9,7 +9,7 @@ const generalSrc = () => {
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
 	}
 
-	if (document.location.href=="http://www.charmdate.com/clagt/lovecall/add2.php?act=saveandsubmit"){
+	if (document.location.href == "http://www.charmdate.com/clagt/lovecall/add2.php?act=saveandsubmit"){
 		port.postMessage({method: "sended"});
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
 	}

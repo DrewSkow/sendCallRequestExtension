@@ -24,7 +24,7 @@ const script = async (p) => {
         p.onMessage.addListener(msg=>{ 
             if(isOn){
                 if(msg.method == "createTab"){
-                    chrome.tabs.create({active: false, index:5, url:"https://www.charmdate.com/clagt/lovecall/add.php"})
+                    chrome.tabs.create({active: false, index:5, url:"http://www.charmdate.com/clagt/loginb.htm"})
                 }
                 if(msg.method == "switchOnTab") {
                     chrome.tabs.reload(msg.tabid)
