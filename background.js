@@ -19,6 +19,13 @@ let date;
 let sended = 0;
 let maxSend;
 let dataForSend = {}
+let checkLady;
+let phone;
+
+function randomInteger(min, max) {
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
+    return Math.round(rand);
+}
 
 const script = async (p) => {
 
@@ -34,6 +41,11 @@ const script = async (p) => {
                 if(msg.method == "sendData"){
                     data = msg.data;
                     time.hour = 1;
+                    if(checkLady!=msg.data.wId){
+                        checkLady = msg.data.wId;
+                        phone = randomInteger(1000009, 9999999)
+                    }
+                    
                     p.postMessage({method: "dataNotReady"})
                 }
                 if(msg.method == "sended"){
@@ -48,13 +60,15 @@ const script = async (p) => {
                         if(time.minute==60){time.minute=1, time.hour++}
                         if(time.hour==24){time.hour=1; time.day++}
                         if(time.day==3){console.log(time.day); p.postMessage({method: "daysError", day:time.day})}
+
                         if(data.menId.length>0 && sended<maxSend){
                             dataForSend = {
                                 wId: data.wId,
                                 mId: data.menId[0],
                                 minute: time.minute,
                                 hour: time.hour,
-                                date: date || undefined
+                                date: date || undefined, 
+                                phone
                             }            
                             p.postMessage({method: "data", dataForSend});
                             time.minute++;

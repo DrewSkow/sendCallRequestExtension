@@ -29,7 +29,7 @@ const generalSrc = () => {
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
-					if(check === 0){port.postMessage({method: "askData"})}
+					if(check === 0){port.postMessage({method: "askData"})};
 				}, 2000)
 			}
 		}
@@ -38,15 +38,15 @@ const generalSrc = () => {
 	const checkZeroBefore = (t,data) => {
 		if (t == "d"){
 			if (data < 10) {return `0${data}`}
-			else {return `${data}`}
+			else {return `${data}`};
 		} else {
 			if (data < 9) {return `0${data+1}`}
-			else {return `${data+1}`}
+			else {return `${data+1}`};
 		}
 	}
 
 	const checkMinutes = (id) => {
-		if(id<15){return id}
+		if(id<15){return id};
 		if(id>=15){return id+1};
 		if(id>=28){return id+2};
 	}
@@ -346,7 +346,7 @@ const generalSrc = () => {
 		utc = localTime + localOffset;
 		const nd = new Date(utc + (3600000*offset));
 		utc = new Date(utc);
-		return utc
+		return utc;
 	}
 
 	const setTime = (data) => {
@@ -357,10 +357,8 @@ const generalSrc = () => {
 		time.setMonth(time.getMonth()+6);
 
 		if(!!data?.date?.day){
-			console.log("est'");
 			document.getElementById("calldate").value=`${data.date.year}-${data.date.month}-${data.date.day}`;
 		} else {
-			console.log(time)
 			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
 		}
 
@@ -369,27 +367,26 @@ const generalSrc = () => {
 
 		const minutes = document.getElementById("callm");
 		minutes.append(new Option (checkZeroBefore("d", checkMinutes(data.minute)), checkZeroBefore("d", checkMinutes(data.minute)), false, true));
-		getCallTime("LOCAL")
-
-		document.getElementById("womanphone").value="+380955200000"
-		document.getElementsByName("needtrans")[1].checked=true
+		getCallTime("LOCAL");
+		document.getElementById("womanphone").value=`+38095${data.phone}`;
+		document.getElementsByName("needtrans")[1].checked=true;
 	}
 
 	const sendReq = async (data) => {
-		const wid = document.getElementById("womanid")
+		const wid = document.getElementById("womanid");
 		wid.value=data.wId;
-		await getWomanProfile(data.wId)
+		await getWomanProfile(data.wId);
 
-		const mid = document.getElementById("manid")
+		const mid = document.getElementById("manid");
 		mid.value=data.mId;
 		await getManProfile(data.mId);
 
 		setTimeout(()=> {
-			setTime(data)
+			setTime(data);
 		}, 2000);
 
 		setTimeout(()=>{
-			document.forms[0].action = "add.php?act=saveandsubmit",
+			document.forms[0].action = "add.php?act=saveandsubmit";
 			document.forms[0].submit();
 		}, 3000)	
 	}
