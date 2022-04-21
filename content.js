@@ -385,10 +385,10 @@ const generalSrc = () => {
 			setTime(data);
 		}, 2000);
 
-		setTimeout(()=>{
-			document.forms[0].action = "add.php?act=saveandsubmit";
-			document.forms[0].submit();
-		}, 3000)	
+		// setTimeout(()=>{
+		// 	document.forms[0].action = "add.php?act=saveandsubmit";
+		// 	document.forms[0].submit();
+		// }, 3000)	
 	}
 }
 

@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Send Request For Phone Call",
     "description" : "Expansion for sending request",
-    "version" : "0.0.1",
+    "version" : "1.0.0",
     "author": "Drew Skow",
     "content_scripts": [
         {
