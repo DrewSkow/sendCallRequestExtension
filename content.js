@@ -15,6 +15,7 @@ const generalSrc = () => {
 	const err = document.getElementsByClassName("red");
 	if (err.length>0 && document.getElementsByClassName("STYLE1")[0].innerHTML.indexOf("Male member") == 0){
 		port.postMessage({method: "skipMan"})
+		location.reload();
 	}
 
 	let check = 0;
