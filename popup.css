@@ -78,6 +78,8 @@ p{
     background: rgba(51, 58, 222, 0.7);
 }
 
+/* switch button ========================== */
+
 .switcher{
     display: flex;
     justify-content: space-between;
@@ -90,15 +92,15 @@ p{
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
-  
-  .switch input { 
+}
+
+.switch input { 
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -108,9 +110,9 @@ p{
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -120,27 +122,129 @@ p{
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked + .slider {
     background-color: #333ADE;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus + .slider {
     box-shadow: 0 0 1px #333ADE;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  
-  /* Закругленные ползунки */
-  .slider.round {
+}
+
+/* Закругленные ползунки */
+.slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
     border-radius: 50%;
-  }
+}
+
+/* Date picker ============================= */
+
+.date-picker {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    height: 36px;
+    background-color: #FFF;
+    margin: 0 auto;
+    box-shadow: 0px 1px 2px rgba(51, 58, 222, 0.2), 0px 4px 6px rgba(74, 0, 224, 0.06);
+    border-radius:5px; 
+
+    cursor: pointer;
+    user-select: none;
+}
+
+.date-picker:hover {
+    background-color: #F3F3F3;
+}
+
+.date-picker .selected-date {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: 500;
+    color: #333ADE;
+    font-size: 14px;
+}
+
+.date-picker .dates {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+
+    background-color: #FFF;
+}
+
+.date-picker .dates.active {
+    display: block;
+}
+
+.date-picker .dates .month {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #EEE;
+}
+
+.date-picker .dates .month .arrows {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #313131;
+    font-size: 20px;
+}
+
+.date-picker .dates .month .arrows:hover {
+    background-color: #F3F3F3;
+}
+
+.date-picker .dates .month .arrows:active {
+    background-color: #333ADE;
+    color: #fff;
+}
+
+.date-picker .dates .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: 200px;
+}
+.date-picker .dates .days .day { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #313131;
+}
+.date-picker .dates .days .day:hover { 
+  background-color: #ECEDFD;
+  transition: all 0.3s ease;
+}
+
+.date-picker .dates .days .notAvailableDay { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #737189;
+  background-color: #ededed;
+}
+
+.date-picker .dates .days .day.selected {
+    background-color: #333ADE;
+    color: #fff;
+}

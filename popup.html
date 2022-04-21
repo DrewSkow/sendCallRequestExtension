@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-
+    <script src="jquery.js"></script>
     <title>popup</title>
 </head>
 <body>
@@ -16,6 +16,7 @@
         <p>ID Девушки</p>       
         <input placeholder="Введите ID девушки" type="text" name="w_id" id="i_w_id">
     </div>
+
     <div class="row">
         <p>ID Мужчин</p>
         <input placeholder="Введите ID мужчин" type="text" name="m_id" id="i_m_id">
@@ -23,10 +24,29 @@
             Вводите ID мужчин через запятую без пробелов
         </p>
     </div>
+
     <div class="row">
         <p>Количество заявок для одного мужчины</p>    
         <input placeholder="Введите количество" type="number" name="quantity" id="req_quantity">
     </div>
+
+    <div class="row">
+        <p>Дата начала рассылки</p>
+        <div class="date-picker">
+            <div class="selected-date"></div>
+    
+            <div class="dates">
+                <div class="month">
+                    <div class="arrows prev-mth">&lt;</div>
+                    <div class="mth"></div>
+                    <div class="arrows next-mth">&gt;</div>
+                </div>
+    
+                <div class="days"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="btn">
         <button id="sendButton">Начать рассылку</button>
     </div>
@@ -38,8 +58,7 @@
             <span class="slider round"></span>
         </label>
     </div>
-
-
-    <script src="popup.js" ></script>
+    <script src="date-picker.js" ></script>
+    <script src="popup.js" type="module" ></script>
 </body>
 </html>

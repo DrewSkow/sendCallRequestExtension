@@ -11,10 +11,11 @@ chrome.storage.onChanged.addListener((ch, na) => {
 
 let data;
 const time = {
-    minute: 59,
-    hour: 23,
+    minute: 1,
+    hour: 1,
     day: 0,
 }
+let date;
 let sended = 0;
 let maxSend;
 let dataForSend = {}
@@ -38,26 +39,31 @@ const script = async (p) => {
                 if(msg.method == "sended"){
                     sended++;
                 } 
+                if(msg.method == "sendDate"){
+                    date = msg.dateForSend
+                }
                 if(msg.method == "askData"){
                     if(!!data){
                         maxSend=data.qV
+                        console.log(time.day);
                         if(time.minute==60){time.minute=1, time.hour++}
                         if(time.hour==24){time.hour=1; time.day++}
-                        if(time.day==61){p.postMessage({method: "daysError"}); return}
+                        if(time.day==2){console.log(time.day); p.postMessage({method: "daysError", day:time.day})}
                         if(data.menId.length>0 && sended<maxSend){
                             dataForSend = {
                                 wId: data.wId,
                                 mId: data.menId[0],
                                 minute: time.minute,
-                                hour: time.hour
+                                hour: time.hour,
+                                date
                             }            
                             p.postMessage({method: "data", dataForSend});
                             time.minute++;
                         } else if(data.menId.length>0 && sended==maxSend){
                             data.menId.shift();
                             time.day=0;
-                            time.hour=23;
-                            time.minute=59;
+                            time.hour=1;
+                            time.minute=1;
                             sended=0;
                         }
                     } else {p.postMessage({method: "dataNotReady"})}

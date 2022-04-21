@@ -25,7 +25,7 @@ const generalSrc = () => {
 				}
 			}
 			case ("daysError") : {
-				alert("Было проверено 60 дней до текущей даты")
+				if(msg.day==2){alert("Было проверено 2 дня от выбранной даты"); return false };
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
@@ -350,13 +350,16 @@ const generalSrc = () => {
 	}
 
 	const setTime = (data) => {
-		document.getElementById("timezone").options[1].selected=true; 
-		
+		document.getElementById("timezone").options[1].selected=true;  
 
 		const daymill = 24*60*60*1000;
 		const time = setGMTTime(0);
 		time.setMonth(time.getMonth()+6);
 		time.setTime(time.getTime()-(daymill*data.day));
+
+		if(data.date.day!=undefined){
+			document.getElementById("calldate").value=`${data.date.year}-${data.date.month}-${data.date.day}`;
+		}
 
 		document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
 		document.getElementById("callh").options[data.hour].selected=true;
@@ -382,10 +385,10 @@ const generalSrc = () => {
 			setTime(data)
 		}, 2000);
 
-		setTimeout(()=>{
-			document.forms[0].action = "add.php?act=saveandsubmit",
-			document.forms[0].submit();
-		}, 3000)	
+		// setTimeout(()=>{
+		// 	document.forms[0].action = "add.php?act=saveandsubmit",
+		// 	document.forms[0].submit();
+		// }, 3000)	
 	}
 }
 
