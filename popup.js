@@ -30,7 +30,7 @@ const handleClick = async () => {
     } else{
         alert("одно из полей не заполнено")
     }
-   await chrome.storage.local.remove(["wId", "mId", "quantity"]);
+  // await chrome.storage.local.remove(["wId", "mId", "quantity"]);
 }
 
 btn.addEventListener('click', handleClick)

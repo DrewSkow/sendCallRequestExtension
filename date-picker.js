@@ -21,19 +21,20 @@ const setGMTTime = (offset) => {
 	return utc
 }
 
+
 const date = setGMTTime(0);
 const maxDate = new Date(date);
 maxDate.setMonth(maxDate.getMonth()+6);
-let day = date.getDate();
-let month = date.getMonth();
-let year = date.getFullYear();
+let day = maxDate.getDate();
+let month = maxDate.getMonth();
+let year = maxDate.getFullYear();
 
-let selectedDate = date;
-let selectedDay = day;
-let selectedMonth = month;
-let selectedYear = year;
+let selectedDate = maxDate;
+let selectedDay = maxDate.getDate();
+let selectedMonth = maxDate.getMonth();
+let selectedYear = maxDate.getFullYear();
 
-const thisMonth = new Date(date);
+const thisMonth = new Date(maxDate);
 const nextMonth = new Date(thisMonth);
 nextMonth.setMonth(nextMonth.getMonth()+1);
 
@@ -41,7 +42,7 @@ let amount_days = (nextMonth.getTime() - thisMonth.getTime()) /1000/24/60/60;
 
 mth_element.textContent = months[month] + ' ' + year;
 
-selected_date_element.textContent = formatDate(date);
+selected_date_element.textContent = formatDate(maxDate);
 selected_date_element.dataset.value = selectedDate;
 
 populateDates();

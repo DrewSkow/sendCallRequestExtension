@@ -25,7 +25,7 @@ const generalSrc = () => {
 				}
 			}
 			case ("daysError") : {
-				if(msg.day==2){alert("Было проверено 2 дня от выбранной даты"); return false };
+				if(msg.day==3){alert("Было проверено 3 дня от выбранной даты"); return false };
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
@@ -355,13 +355,16 @@ const generalSrc = () => {
 		const daymill = 24*60*60*1000;
 		const time = setGMTTime(0);
 		time.setMonth(time.getMonth()+6);
-		time.setTime(time.getTime()-(daymill*data.day));
 
-		if(data.date.day!=undefined){
+		if(!!data?.date?.day){
+			console.log("est'");
 			document.getElementById("calldate").value=`${data.date.year}-${data.date.month}-${data.date.day}`;
+		} else {
+			console.log(time)
+			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
 		}
 
-		document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
+
 		document.getElementById("callh").options[data.hour].selected=true;
 
 		const minutes = document.getElementById("callm");

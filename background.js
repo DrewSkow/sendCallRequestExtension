@@ -40,30 +40,29 @@ const script = async (p) => {
                     sended++;
                 } 
                 if(msg.method == "sendDate"){
-                    date = msg.dateForSend
+                    date = msg.date
                 }
                 if(msg.method == "askData"){
                     if(!!data){
                         maxSend=data.qV
-                        console.log(time.day);
                         if(time.minute==60){time.minute=1, time.hour++}
                         if(time.hour==24){time.hour=1; time.day++}
-                        if(time.day==2){console.log(time.day); p.postMessage({method: "daysError", day:time.day})}
+                        if(time.day==3){console.log(time.day); p.postMessage({method: "daysError", day:time.day})}
                         if(data.menId.length>0 && sended<maxSend){
                             dataForSend = {
                                 wId: data.wId,
                                 mId: data.menId[0],
                                 minute: time.minute,
                                 hour: time.hour,
-                                date
+                                date: date || undefined
                             }            
                             p.postMessage({method: "data", dataForSend});
                             time.minute++;
                         } else if(data.menId.length>0 && sended==maxSend){
                             data.menId.shift();
-                            time.day=0;
-                            time.hour=1;
-                            time.minute=1;
+                            // time.day=0;
+                            // time.hour=1;
+                            // time.minute=1;
                             sended=0;
                         }
                     } else {p.postMessage({method: "dataNotReady"})}
