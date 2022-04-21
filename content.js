@@ -25,7 +25,7 @@ const generalSrc = () => {
 				}
 			}
 			case ("daysError") : {
-				if(msg.day==3){alert("Было проверено 3 дня от выбранной даты"); return false };
+				if(msg.day==3){alert("Было проверено 3 дня от выбранной даты"); window.stop(); return false };
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
