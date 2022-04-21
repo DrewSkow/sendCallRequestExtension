@@ -38,6 +38,9 @@ const script = async (p) => {
                 if(msg.method == "switchOnTab") {
                     chrome.tabs.reload(msg.tabid)
                 }
+                if (msg.method == "skipMan") {
+                    data.menId.shift();
+                }
                 if(msg.method == "sendData"){
                     data = msg.data;
                     time.hour = 1;

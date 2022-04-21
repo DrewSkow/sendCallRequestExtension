@@ -12,6 +12,11 @@ const generalSrc = () => {
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
 	}
 
+	const err = document.getElementsByClassName("red");
+	if (err.length>0 && document.getElementsByClassName("STYLE1")[0].innerHTML.indexOf("Male member") == 0){
+		port.postMessage({method: "skipMan"})
+	}
+
 	let check = 0;
 
 	if(check==0){port.postMessage({method: "askData"})}
