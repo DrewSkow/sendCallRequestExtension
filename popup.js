@@ -49,7 +49,7 @@ const handleClick = async () => {
     } else{
         alert("одно из полей не заполнено")
     }
-//   await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
+  await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
 }
 
 const switchClick = (e) => {
