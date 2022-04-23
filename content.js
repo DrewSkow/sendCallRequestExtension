@@ -12,11 +12,23 @@ const generalSrc = () => {
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
 	}
 
+	// checking errors 
 	const err = document.getElementsByClassName("red");
-	if (err.length>0 && document.getElementsByClassName("STYLE1")[0].innerHTML.indexOf("Male member") == 0){
-		port.postMessage({method: "skipMan"})
-		location.reload();
+	if (err.length>0){
+		const errEl = document.getElementsByClassName("STYLE1");
+		for(let i = 0; i<err.length; i++){
+			if(errEl[i].innerHTML.indexOf("Male member") == 0){
+				port.postMessage({method: "skipMan"});
+				location.reload();
+			} else if(errEl[i].innerHTML.indexOf("Booking is full") == 0){
+				port.postMessage({method: "bookingError"});
+			}
+		} 
 	}
+
+
+
+	
 
 	let check = 0;
 
@@ -31,7 +43,11 @@ const generalSrc = () => {
 				}
 			}
 			case ("daysError") : {
-				if(msg.day==3){alert("Было проверено 3 дня от выбранной даты"); window.stop(); return false };
+				if(msg.day==3){
+					alert("Было проверено 6 дня от выбранной даты - это 90 попыток отправки по разным часам и месяцам");
+					window.stop(); 
+					return false 
+				};
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
@@ -57,9 +73,8 @@ const generalSrc = () => {
 		if(id>=28){return id+2};
 	}
 
+	//variables for profiles
 	var wtskey = new Array();
-
-	//variables
 	var Separator=";";
 	var Fields=6;
 	var womanFlag = false;
@@ -365,9 +380,8 @@ const generalSrc = () => {
 		if(!!data?.date?.day){
 			document.getElementById("calldate").value=`${data.date.year}-${data.date.month}-${data.date.day}`;
 		} else {
-			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
+			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth()-data.date.month)}-${checkZeroBefore("d",time.getDate())}`;
 		}
-
 
 		document.getElementById("callh").options[data.hour].selected=true;
 
@@ -391,10 +405,10 @@ const generalSrc = () => {
 			setTime(data);
 		}, 2000);
 
-		setTimeout(()=>{
-			document.forms[0].action = "add.php?act=saveandsubmit";
-			document.forms[0].submit();
-		}, 3000)	
+		// setTimeout(()=>{
+		// 	document.forms[0].action = "add.php?act=saveandsubmit";
+		// 	document.forms[0].submit();
+		// }, 3000)	
 	}
 }
 

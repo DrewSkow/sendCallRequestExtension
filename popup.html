@@ -12,52 +12,78 @@
     <title>popup</title>
 </head>
 <body>
-    <div class="row">
-        <p>ID Девушки</p>       
-        <input placeholder="Введите ID девушки" type="text" name="w_id" id="i_w_id">
-    </div>
+    <div class="wrapper">
 
-    <div class="row">
-        <p>ID Мужчин</p>
-        <input placeholder="Введите ID мужчин" type="text" name="m_id" id="i_m_id">
-        <p class="desc">
-            Вводите ID мужчин через запятую без пробелов
-        </p>
-    </div>
+        <div class="switcher">
+            <div class="switcher_wrapper">
+                <p>Включить программу</p>
+                <label class="switch-small">
+                    <input id="switchButton" type="checkbox">
+                    <span class="slider-small round"></span>
+                </label>
+            </div>
+        </div>
 
-    <div class="row">
-        <p>Количество заявок для одного мужчины</p>    
-        <input placeholder="Введите количество" type="number" name="quantity" id="req_quantity">
-    </div>
+        <div class="row">
+            <p>ID Девушки</p>       
+            <input placeholder="Введите ID девушки" type="text" name="w_id" id="i_w_id">
+        </div>
 
-    <div class="row">
-        <p>Дата начала рассылки</p>
-        <div class="date-picker">
-            <div class="selected-date"></div>
-    
-            <div class="dates">
-                <div class="month">
-                    <div class="arrows prev-mth">&lt;</div>
-                    <div class="mth"></div>
-                    <div class="arrows next-mth">&gt;</div>
+        <div class="row">
+            <p>ID Мужчин</p>
+            <input placeholder="Через запятую без пробелов" type="text" name="m_id" id="i_m_id">
+        </div>
+
+        <div class="row pickers">
+            <div class="date-picker-wrapper">
+                <p>Дата</p>
+                <div class="date-picker">
+                    <div class="selected-date"></div>
+            
+                    <div class="dates">
+                        <div class="month">
+                            <div class="arrows prev-mth">&lt;</div>
+                            <div class="mth"></div>
+                            <div class="arrows next-mth">&gt;</div>
+                        </div>
+                        <div class="days"></div>
+                    </div>
                 </div>
-    
-                <div class="days"></div>
+            </div>
+            <div class="time-picker">
+                <p>Время</p>
+                <input type="number" step="1" max="24" min="1" value="01" id="timeH">
+                :
+                <input type="number" step="1" max="60" min="1" value="01" id="timeM">
+            </div>
+        </div>
+
+        <div class="row">
+            <p>Количество заявок</p>    
+            <input placeholder="Для одного мужчины" type="number" name="quantity" id="req_quantity">
+        </div>
+        
+        <div class="btn row">
+            <button id="sendButton">Начать рассылку</button>
+        </div>
+
+        <div class="row">
+            <div class="multi">
+                <p>Многостраничный режим</p>  
+                <div class="multi__line">
+                    <input placeholder="Кол-во стр." type="number" name="quantity" id="multi-page">
+                    <label class="switch">
+                        <input id="switchButtonMultiPage" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>  
+                <p class="desc">
+                    Работа в нескольких вкладках повысит нагрузку на ваш ПК. 
+                </p>
             </div>
         </div>
     </div>
 
-    <div class="btn">
-        <button id="sendButton">Начать рассылку</button>
-    </div>
-
-    <div class="row switcher">
-        <p>Выключатель</p>
-        <label class="switch">
-            <input id="switchButton" type="checkbox">
-            <span class="slider round"></span>
-        </label>
-    </div>
     <script src="date-picker.js" ></script>
     <script src="popup.js" type="module" ></script>
 </body>

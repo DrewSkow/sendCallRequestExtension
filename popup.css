@@ -1,16 +1,27 @@
 body{
-    padding: 0 15px;
-    width: 250px;
+    width: 260px;
     font-family: 'Montserrat', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.wrapper{
+    position: relative;
+
+    padding: 50px 20px 20px 20px;
+    
+    max-width: 220px;
+    width: 100%;
 }
 
 input{
-    padding: 10px 16px 10px 10px;
+    max-width: 200px;
+    width: 100%;
+    padding: 10px;
     background: #FFFFFF;
     box-shadow: 0px 1px 2px rgba(51, 58, 222, 0.2), 0px 4px 6px rgba(74, 0, 224, 0.06);
     border-radius: 5px;
-    border:none;
-    width:90%;
+    border: none;
     cursor: pointer;
 }
 
@@ -18,7 +29,15 @@ input::placeholder{
     letter-spacing: 0.03em;
     color: #737189;
     margin: 0px 10px;
+}
 
+input:focus{
+    outline: 1px solid rgba(51, 58, 222, 0.3);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
 p{
@@ -27,34 +46,78 @@ p{
     font-size: 14px;
     line-height: 17px;
     color: #000;
-
-    margin-bottom: 10px;
-}
-
-.desc{
-    margin-top: 10px;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 130%;
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.03em;
-    color: #737189;
+    margin: 0 0 10px 0;
+    padding: 0;
 }
 
 .row{
-    margin: 25px auto 0 auto;
+    width: 100%;
+    max-width: 220px;
+    margin-top: 17px;
 }
+
+.pickers{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.desc{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 130%;
+    letter-spacing: 0.03em;
+    color: #737189;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.multi__line{
+    display: flex;
+    justify-content: space-between;
+}
+.multi__line input{
+    max-width: 120px;
+}
+
+.time-picker{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+}
+
+#timeM, #timeH{
+    max-width: 40px;
+
+    padding: 10px 0;
+    margin: 0;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 130%;
+    color: #333ADE; 
+    text-align: center;
+}
+
+#timeH{
+    margin-right: 5px;
+}
+
+#timeM{
+    margin-left: 5px;
+}
+
+
 
 .btn{
     width: 100%;
-    display: flex;
-    justify-content: center;
+    max-width: 240px;
 }
 
 #sendButton{
     width: 100%;
-    margin: 30px 0 0 0;
+    margin: 0;
     height: 37px;
     border:none;
     background: #333ADE;
@@ -81,13 +144,37 @@ p{
 /* switch button ========================== */
 
 .switcher{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+}
+
+.switcher_wrapper{
+    width: 100%;
+    background: #F5F5FD;
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.switcher_wrapper p{
+    margin-top: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
 }
 
 .switch {
+    margin-left: 10px;
     position: relative;
     display: inline-block;
     width: 60px;
@@ -147,17 +234,82 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
+/* уменьшенный переключатель */
+
+.switch-small {
+
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+.switch-small input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-small {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider-small:before {
+    position: absolute;
+    content: "";
+    width: 15.86px;
+    height: 16.25px;
+    left: 1.83px;
+    bottom: 1.87px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider-small {
+    background-color: #333ADE;
+}
+
+input:focus + .slider-small {
+    box-shadow: 0 0 1px #333ADE;
+}
+
+input:checked + .slider-small:before {
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+/* Закругленные ползунки */
+.round {
+    border-radius: 34px;
+}
+
+.round:before {
+    border-radius: 50%;
+}
+
+
+
 /* Date picker ============================= */
 
 .date-picker {
     position: relative;
     width: 100%;
-    max-width: 320px;
-    height: 36px;
-    background-color: #FFF;
-    margin: 0 auto;
+    max-width: 106px;
+
     box-shadow: 0px 1px 2px rgba(51, 58, 222, 0.2), 0px 4px 6px rgba(74, 0, 224, 0.06);
     border-radius:5px; 
+
+    padding: 10px 5px;
 
     cursor: pointer;
     user-select: none;
@@ -168,30 +320,29 @@ input:checked + .slider:before {
 }
 
 .date-picker .selected-date {
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-weight: 500;
-    color: #333ADE;
+    text-align: center;
+    font-weight: 400;
     font-size: 14px;
+    color: #333ADE;
 }
 
 .date-picker .dates {
     display: none;
     position: absolute;
-    bottom: 100%;
-    left: 0;
-    right: 0;
+    bottom:100%;
+    left:0;
+    right: -105%;
+
+    border: .5px solid rgba(51, 58, 222, 0.2);
+    border-radius: 2px;
+    box-shadow: 0px 1px 2px rgba(51, 58, 222, 0.2), 0px 4px 6px rgba(74, 0, 224, 0.06);
 
     background-color: #FFF;
 }
 
 .date-picker .dates.active {
     display: block;
+    z-index: 1000;
 }
 
 .date-picker .dates .month {
@@ -247,4 +398,4 @@ input:checked + .slider:before {
 .date-picker .dates .days .day.selected {
     background-color: #333ADE;
     color: #fff;
-}
+} 
