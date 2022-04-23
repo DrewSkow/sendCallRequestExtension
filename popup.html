@@ -38,7 +38,7 @@
             <div class="date-picker-wrapper">
                 <p>Дата</p>
                 <div class="date-picker">
-                    <div class="selected-date"></div>
+                    <div id="selectedDate" class="selected-date"></div>
             
                     <div class="dates">
                         <div class="month">
@@ -52,9 +52,9 @@
             </div>
             <div class="time-picker">
                 <p>Время</p>
-                <input type="number" step="1" max="24" min="1" value="01" id="timeH">
+                <input type="text" placeholder="Ч" id="timeH">
                 :
-                <input type="number" step="1" max="60" min="1" value="01" id="timeM">
+                <input type="text" placeholder="M" id="timeM">
             </div>
         </div>
 

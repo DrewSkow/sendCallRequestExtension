@@ -2,37 +2,54 @@ const btn = document.getElementById("sendButton");
 const womenId = document.getElementById("i_w_id");
 const menData = document.getElementById("i_m_id");
 const quantity = document.getElementById("req_quantity");
-const timeH = document.getElementById("timeH");
 const timeM = document.getElementById("timeM");
+const timeH = document.getElementById("timeH");
+const dateField = document.querySelector(".selected-date");
 
 const port = chrome.runtime.connect({name: "exchangeData"});
 
 const switchButton = document.getElementById("switchButton");
+
+let date;
 chrome.storage.local.get("switchCallReq", v => switchButton.checked = v.switchCallReq)
 
-chrome.storage.local.get("wId", v => womenId.value = v.wId||"");
-chrome.storage.local.get("mId", v => menData.value = v.mId||"");
-chrome.storage.local.get("quantity", v => quantity.value = +v.quantity || null  );
+const setStorage = (n,v) => {
+    chrome.storage.local.set({[n]:v});
+}
 
-womenId.addEventListener('input', e=>chrome.storage.local.set({wId:e.target.value}));
-menData.addEventListener('input', e=>chrome.storage.local.set({mId:e.target.value}));
-quantity.addEventListener('input', e=>chrome.storage.local.set({quantity:e.target.value}));
+chrome.storage.local.get(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"], v => {
+    womenId.value = v.i_w_id || null;
+    menData.value = v.i_m_id || null;
+    quantity.value = v.req_quantity || null;
+    timeM.value = v.minute || null;
+    timeH.value = v.hour || null;
+    v?.date?.selectedDay? dateField.innerHTML = `${v.date.selectedDay+" / "+(+v.date.selectedMonth+1) +" / "+v.date.selectedYear}`:false;
+    date = !!v.date && new Date(`${v.date.selectedYear+ "-" + v.date.selectedMonth + "-" + v.date.selectedDay}`)  || null;
+})
+
+const wrapper = document.querySelector(".wrapper");
+wrapper.addEventListener("input", (e) => {
+    chrome.storage.local.set({[e.target.id]:e.target.value})
+})
 
 const handleClick = async () => {
-    await chrome.tabs.query({url:"http://www.charmdate.com/clagt/lovecall/add.php"}, v =>{
+    await chrome.tabs.query({url:["http://www.charmdate.com/clagt/lovecall/add.php", "http://www.charmdate.com/clagt/lovecall/add.php?act=saveandsubmit"]}, v =>{
         v.length == 0 && port.postMessage({method: "createTab"});
         v.length != 0 && port.postMessage({method: "runScriptInTab", tabid: v[0].id})
     })
     const menId = menData.value.split(",");
     const wId = womenId.value;
     const qV = quantity.value
-    const data = {menId, wId, qV}
+    const hour = +timeH.value;
+    const minute = +timeM.value;
+    const data = {menId, wId, qV, hour, minute}
+
     if(!!wId && !!menId && !!qV){
-        await port.postMessage({method: "sendData", data})
+        await port.postMessage({method: "sendData", data, date})
     } else{
         alert("одно из полей не заполнено")
     }
-  await chrome.storage.local.remove(["wId", "mId", "quantity"]);
+//   await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
 }
 
 const switchClick = (e) => {
@@ -42,17 +59,32 @@ const switchClick = (e) => {
 const onWheelHandler = (e, t) => {
     if(e.deltaY>0){
         e.target.value--;
-        if (e.target.value<1){e.target.value=1}
+        if (e.target.value<0){e.target.value=0}
     } else {
         e.target.value++;
-        if(t == "m" && e.target.value>60){
-            e.target.value = 60;
+        if(t == "m" && e.target.value>59){
+            e.target.value = 59;
         } else if(t=="h" && e.target.value>23){e.target.value=23}
     }
+    t=="m" && chrome.storage.local.set({minute: e.target.value})
+    t=="h" && chrome.storage.local.set({hour: e.target.value})
 }
 
-timeH.addEventListener("mousewheel", e => onWheelHandler(e, "h"))
+timeH.addEventListener("mousewheel", e => onWheelHandler(e, "h"));
+timeH.addEventListener('input', e => {
+    if(e.target.value>23){
+        e.target.value=23;
+    } else if(e.target.value<0){e.target.value = 0}
+    chrome.storage.local.set({hour: e.target.value})
+})
 timeM.addEventListener("mousewheel", e => onWheelHandler(e, "m"))
+timeM.addEventListener('input', e => {
+    if(e.target.value>59){
+        e.target.value=59;
+    } else if(e.target.value<0){e.target.value = 0}
+    chrome.storage.local.set({minute: e.target.value})
+})
+
 
 btn.addEventListener('click', handleClick)
 

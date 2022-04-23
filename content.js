@@ -77,8 +77,6 @@ const generalSrc = () => {
 	var wtskey = new Array();
 	var Separator=";";
 	var Fields=6;
-	var womanFlag = false;
-	var manFlag = false;
 	var LocalOffset = 2;
 	var wts = new Array();
 
@@ -371,16 +369,16 @@ const generalSrc = () => {
 	}
 
 	const setTime = (data) => {
+		const localDate = new Date(data.date)
 		document.getElementById("timezone").options[1].selected=true;  
 
-		const daymill = 24*60*60*1000;
 		const time = setGMTTime(0);
 		time.setMonth(time.getMonth()+6);
 
-		if(!!data?.date?.day){
-			document.getElementById("calldate").value=`${data.date.year}-${data.date.month}-${data.date.day}`;
+		if(!!data?.date){
+			document.getElementById("calldate").value=`${localDate.getFullYear()}-${checkZeroBefore('m', localDate.getMonth()) }-${checkZeroBefore("d", localDate.getDate())}`;
 		} else {
-			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth()-data.date.month)}-${checkZeroBefore("d",time.getDate())}`;
+			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
 		}
 
 		document.getElementById("callh").options[data.hour].selected=true;
@@ -405,10 +403,10 @@ const generalSrc = () => {
 			setTime(data);
 		}, 2000);
 
-		// setTimeout(()=>{
-		// 	document.forms[0].action = "add.php?act=saveandsubmit";
-		// 	document.forms[0].submit();
-		// }, 3000)	
+		setTimeout(()=>{
+			document.forms[0].action = "add.php?act=saveandsubmit";
+			document.forms[0].submit();
+		}, 3000)	
 	}
 }
 

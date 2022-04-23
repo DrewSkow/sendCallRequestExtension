@@ -120,7 +120,7 @@ function populateDates (e) {
 
 			selected_date_element.textContent = formatDate(selectedDate);
 			selected_date_element.dataset.value = selectedDate;
-
+			chrome.storage.local.set({date: {selectedDay, selectedMonth,selectedYear}});
 			populateDates();
 		});
 

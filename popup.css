@@ -35,11 +35,6 @@ input:focus{
     outline: 1px solid rgba(51, 58, 222, 0.3);
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-}
-
 p{
     font-style: normal;
     font-weight: 600;
@@ -81,6 +76,8 @@ p{
     max-width: 120px;
 }
 
+
+
 .time-picker{
     font-weight: 500;
     font-size: 14px;
@@ -88,9 +85,8 @@ p{
 }
 
 #timeM, #timeH{
-    max-width: 40px;
+    max-width: 20px;
 
-    padding: 10px 0;
     margin: 0;
 
     font-weight: 400;
@@ -303,8 +299,7 @@ input:checked + .slider-small:before {
 
 .date-picker {
     position: relative;
-    width: 100%;
-    max-width: 106px;
+    width:100px;
 
     box-shadow: 0px 1px 2px rgba(51, 58, 222, 0.2), 0px 4px 6px rgba(74, 0, 224, 0.06);
     border-radius:5px; 

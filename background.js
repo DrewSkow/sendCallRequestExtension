@@ -6,11 +6,13 @@ let isOn;
 //data 
 let date;
 let data;
+let localDate;
 
 //checker
 let sended = 0;
 let maxSend;
 let checkNewLady;
+let checkClear = true;
 let checkErrors = {
     checkSended: 0,
     error: 0
@@ -74,11 +76,12 @@ const script = async (p) => {
 
                 if (msg.method == "sendData" ) {
                     data = msg.data;
-                    time.hour = 1;
+                    date = new Date(msg.date);
                     if(checkNewLady !=data.wId){
                         checkNewLady = data.wId;
                         phone = randomInteger(1000009, 9999999)
                     }
+                    checkClear = true;
                 }
 
                 if(msg.method == "askData") {
@@ -94,16 +97,27 @@ const script = async (p) => {
                         }
 
                         if(data.menId.length>0 && sended<maxSend){
+                            
                             dataForSend = {
                                 wId: data.wId,
                                 mId: data.menId[0],
-                                minute: time.minute,
-                                hour: time.hour,
-                                month: time.month,
-                                date: date || undefined, 
+
+                                date: date.setDate(date.getDate()-time.day),
+                                minute: checkClear?data.minute:time.minute,
+                                hour: checkClear?data.hour+1:time.hour,
+
                                 phone
-                            }            
+                            }           
                             p.postMessage({method: "data", dataForSend});
+
+                            if(checkClear){
+                                time.minute = data.minute;
+                                data.minute = undefined;
+                                
+                                time.hour = data.hour+1;
+                                data.hour = undefined;
+                                checkClear = false;
+                            }
                             time.minute++;
                         } else if(data.menId.length>0 && sended==maxSend){
                             data.menId.shift();
@@ -121,9 +135,4 @@ const script = async (p) => {
 }
 
 chrome.runtime.onConnect.addListener(p=>script(p))
- 
 
-// сделать ввод даты для мужчины, -2 дня,
-// выпадающий каледарь,
-// продолжать у мужиков после смены мужчины,
-// 
