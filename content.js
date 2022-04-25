@@ -35,7 +35,7 @@ const generalSrc = () => {
 	port.onMessage.addListener(msg=>{
 		switch (msg.method) {
 			case "data" : {
-				if(check===0){
+				if(checkFirstAsk===0){
 					sendReq(msg.dataForSend);
 					checkFirstAsk++;
 				}
@@ -369,6 +369,7 @@ const generalSrc = () => {
 
 	// setting time on the page
 	const setTime = (data) => {
+
 		const localDate = new Date(data.date)
 		document.getElementById("timezone").options[1].selected=true;  
 
@@ -392,6 +393,7 @@ const generalSrc = () => {
 
 	//send
 	const sendReq = async (data) => {
+
 		const wid = document.getElementById("womanid");
 		wid.value=data.wId;
 		await getWomanProfile(data.wId);
@@ -400,13 +402,17 @@ const generalSrc = () => {
 		mid.value=data.mId;
 		await getManProfile(data.mId);
 
-		setTimeout(()=> {
+		setTimeout( () => {
 			setTime(data);
 		}, 2000);
 
-		setTimeout(()=>{
-			document.forms[0].action = "add.php?act=saveandsubmit";
-			document.forms[0].submit();
+		setTimeout( () => {
+			chrome.storage.local.get("stopScr", v => {
+				if(!v.stopScr){
+					document.forms[0].action = "add.php?act=saveandsubmit";
+					document.forms[0].submit();
+				}
+			})
 		}, 3000)	
 	}
 }

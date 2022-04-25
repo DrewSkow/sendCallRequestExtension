@@ -1,5 +1,5 @@
-console.log("back is started")
-
+console.log("back is started");
+chrome.storage.local.get(console.log);
 //check switch on/off
 let isOn;
 let isMultiPageOn;
@@ -36,7 +36,7 @@ chrome.storage.local.get("multiMode", v => isMultiPageOn = v.multiMode);
 
 chrome.storage.onChanged.addListener((ch, na) => {
     if(ch.switchCallReq){
-        isOn = v.switchCallReq.newValue;
+        isOn =  ch.switchCallReq.newValue;
     }
     if(ch.multiMode){
         isMultiPageOn = ch.multiMode.newValue;
@@ -53,18 +53,26 @@ const script = async (p) => {
     if(p.name == "exchangeData"){
         p.onMessage.addListener(msg => {
             if(isOn){
-
-                msg.method == "createTab" && chrome.tabs.create({active: false, index:5, url:"http://www.charmdate.com/clagt/loginb.htm"});
+                console.log(msg)
+                msg.method == "createTab" && chrome.tabs.create({active: false, index:5, url:"http://www.charmdate.com/clagt/lovecall/add.php"});
 
                 msg.method == "runScriptInTab" && chrome.tabs.reload(msg.tabid);
 
-                msg.method == "multiPage" && (multiPage = msg.multiPages)
+                msg.method == "multiPage" && (multiPage = msg.multiPages);
                 
                 msg.method == "skipMan" && data.menId.shift();
 
                 msg.method == "sendDate" && (date = msg.date);
 
-                msg.method == "sended" && sended++;
+                if(msg.method == "sended"){
+                    sended++;
+                    if(sended == maxSend-1){
+                        chrome.storage.local.set({stopScr: true});
+                        chrome.tabs.query({active:false}, v => {
+                            v.forEach(item => chrome.tabs.remove(item.id));
+                        }); 
+                    }
+                } 
 
                 if (msg.method == "bookingError") {
                     if(checkErrors.error == 10){
@@ -91,6 +99,7 @@ const script = async (p) => {
                         phone = randomInteger(1000009, 9999999)
                     }
                     checkClear = true;
+                    chrome.storage.local.set({stopScr: false})
                 }
 
                 if(msg.method == "askData") {
@@ -105,16 +114,18 @@ const script = async (p) => {
                             time.month = 0;
                         }
 
-                        if(isMultiPageOn && !!multiPage){
-                            for(let i = 0; i<multiPage; i++){
-                                setTimeout(() => {
-                                    chrome.tabs.create({active: false, url:"http://www.charmdate.com/clagt/lovecall/add.php"})
-                                }, 300)
+                        const openTabs = () => {
+                            for(let i = 0; i<multiPage;i++){
+                                chrome.tabs.create({active: false, url:"http://www.charmdate.com/clagt/lovecall/add.php"});
                             }
+                        }                        
+
+                        if(isMultiPageOn && !!multiPage){
+                            openTabs();
                             chrome.storage.local.set({multiMode: false});
                         }
 
-                        if(data.menId.length>0 && sended<maxSend){
+                        if(data.menId.length>0 && sended<maxSend-1){
                             
                             dataForSend = {
                                 wId: data.wId,
@@ -137,12 +148,17 @@ const script = async (p) => {
                                 checkClear = false;
                             }
                             time.minute++;
-                        } else if(data.menId.length>0 && sended==maxSend){
-                            data.menId.shift();
-                            // time.day=0;
-                            // time.hour=1;
-                            // time.minute=1;
-                            sended=0;
+                        } else if(data.menId.length>0 && sended==maxSend-1){
+                            setTimeout(()=> {
+                                data.menId.shift();
+                                // time.day=0;
+                                // time.hour=1;
+                                // time.minute=1;
+                                sended=0;
+                                if(data.menId.length>0){openTabs()}  
+                                chrome.storage.local.set({stopScr: false});
+                            }, 5000)
+
                         }
                     } else {p.postMessage({method: "dataNotReady"})} 
                 }

@@ -27,8 +27,6 @@ wrapper.addEventListener("input", (e) => {
     chrome.storage.local.set({[e.target.id]:e.target.value})
 })
 
-chrome.storage.local.get(console.log)
-
 chrome.storage.local.get(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date", "multiPage"], v => {
     womenId.value = v.i_w_id || null;
     menData.value = v.i_m_id || null;
@@ -72,9 +70,6 @@ timeM.addEventListener('input', e => {
 
 // switch multi-mode
 chrome.storage.local.get("multiMode", v => multiPageBtn.checked = v.multiMode)
-multiPageInput.addEventListener("input", e => {
-    port.postMessage({method: "multiPage", multiPages: e.target.value});
-})
 multiPageBtn.addEventListener('click', e => chrome.storage.local.set({multiMode: e.target.checked}))
 
 //send data
@@ -90,12 +85,14 @@ const sendData = async () => {
     const minute = +timeM.value;
     const data = {menId, wId, qV, hour, minute}
 
+    await port.postMessage({method: "multiPage", multiPages: multiPageInput.value});
+
     if(!!wId && !!menId && !!qV){
         await port.postMessage({method: "sendData", data, date})
     } else{
         alert("одно из полей не заполнено")
     }
-  await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
+//   await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
 }
 sendBtn.addEventListener('click', sendData)
 
