@@ -21,7 +21,6 @@ const setGMTTime = (offset) => {
 	return utc
 }
 
-
 const date = setGMTTime(0);
 const maxDate = new Date(date);
 maxDate.setMonth(maxDate.getMonth()+6);
@@ -160,6 +159,8 @@ function formatDate (d) {
 	btn.innerHTML = "Начать рассылку";
 	btn.style.backgroundColor = "#333ADE"
 
+	//next time need to work with Date.
+
 	if(+dateForSend.month == (date.getMonth()+1) && dateForSend.year == date.getFullYear() && dateForSend.day >= date.getDate()){
 		port.postMessage({method: "sendDate", date: dateForSend})
 	} else if (+dateForSend.month > (date.getMonth()+1) && dateForSend.year >= date.getFullYear() &&
@@ -169,7 +170,6 @@ function formatDate (d) {
 		btn.innerHTML = "Выбрана некорректная дата";
 		btn.style.backgroundColor = "rgb(255, 80, 57)"
 	}
-
 
 	return day + ' / ' + month + ' / ' + year;
 }

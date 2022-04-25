@@ -2,11 +2,13 @@ console.log("back is started")
 
 //check switch on/off
 let isOn;
+let isMultiPageOn;
 
 //data 
 let date;
 let data;
 let localDate;
+let multiPage;
 
 //checker
 let sended = 0;
@@ -30,10 +32,14 @@ const time = {
 
 //set switch on/off
 chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
+chrome.storage.local.get("multiMode", v => isMultiPageOn = v.multiMode);
 
 chrome.storage.onChanged.addListener((ch, na) => {
     if(ch.switchCallReq){
-        chrome.storage.local.get("switchCallReq", v => isOn = v.switchCallReq);
+        isOn = v.switchCallReq.newValue;
+    }
+    if(ch.multiMode){
+        isMultiPageOn = ch.multiMode.newValue;
     }
 });
 
@@ -41,6 +47,7 @@ function randomInteger(min, max) {
     let rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
 }
+
 
 const script = async (p) => {
     if(p.name == "exchangeData"){
@@ -50,6 +57,8 @@ const script = async (p) => {
                 msg.method == "createTab" && chrome.tabs.create({active: false, index:5, url:"http://www.charmdate.com/clagt/loginb.htm"});
 
                 msg.method == "runScriptInTab" && chrome.tabs.reload(msg.tabid);
+
+                msg.method == "multiPage" && (multiPage = msg.multiPages)
                 
                 msg.method == "skipMan" && data.menId.shift();
 
@@ -96,6 +105,15 @@ const script = async (p) => {
                             time.month = 0;
                         }
 
+                        if(isMultiPageOn && !!multiPage){
+                            for(let i = 0; i<multiPage; i++){
+                                setTimeout(() => {
+                                    chrome.tabs.create({active: false, url:"http://www.charmdate.com/clagt/lovecall/add.php"})
+                                }, 300)
+                            }
+                            chrome.storage.local.set({multiMode: false});
+                        }
+
                         if(data.menId.length>0 && sended<maxSend){
                             
                             dataForSend = {
@@ -128,7 +146,6 @@ const script = async (p) => {
                         }
                     } else {p.postMessage({method: "dataNotReady"})} 
                 }
-                
             }
         })
     }

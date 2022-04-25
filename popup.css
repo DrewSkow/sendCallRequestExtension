@@ -76,8 +76,6 @@ p{
     max-width: 120px;
 }
 
-
-
 .time-picker{
     font-weight: 500;
     font-size: 14px;
@@ -104,6 +102,10 @@ p{
     margin-left: 5px;
 }
 
+#timeH::placeholder, #timeM::placeholder{
+    text-align: center;
+    margin-left: -10px;
+}
 
 
 .btn{

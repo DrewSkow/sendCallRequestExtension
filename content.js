@@ -3,10 +3,12 @@ const port = chrome.runtime.connect({name: "exchangeData"});
 
 const generalSrc = () => {
 
+	//redirecting
 	if(document.location.href == 'http://www.charmdate.com/clagt/woman/women_profiles_allow_edit.php'){
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
 	}
 
+	//redirect and send message aboute success request
 	if (document.location.href == "http://www.charmdate.com/clagt/lovecall/add2.php?act=saveandsubmit"){
 		port.postMessage({method: "sended"});
 		document.location.href = "http://www.charmdate.com/clagt/lovecall/add.php";
@@ -26,20 +28,16 @@ const generalSrc = () => {
 		} 
 	}
 
+	let checkFirstAsk = 0;
 
-
-	
-
-	let check = 0;
-
-	if(check==0){port.postMessage({method: "askData"})}
+	if(checkFirstAsk==0){port.postMessage({method: "askData"})}
 
 	port.onMessage.addListener(msg=>{
 		switch (msg.method) {
 			case "data" : {
 				if(check===0){
 					sendReq(msg.dataForSend);
-					check++;
+					checkFirstAsk++;
 				}
 			}
 			case ("daysError") : {
@@ -51,12 +49,13 @@ const generalSrc = () => {
 			}
 			case "dataNotReady" : {
 				setTimeout(()=>{
-					if(check === 0){port.postMessage({method: "askData"})};
+					if(checkFirstAsk === 0){port.postMessage({method: "askData"})};
 				}, 2000)
 			}
 		}
 	})
 
+	// checkers for data
 	const checkZeroBefore = (t,data) => {
 		if (t == "d"){
 			if (data < 10) {return `0${data}`}
@@ -73,7 +72,7 @@ const generalSrc = () => {
 		if(id>=28){return id+2};
 	}
 
-	//variables for profiles
+	//variables for load profiles
 	var wtskey = new Array();
 	var Separator=";";
 	var Fields=6;
@@ -283,7 +282,6 @@ const generalSrc = () => {
 		});//end ajax
 	}
 
-	//ajax get man profile
 	async function getManProfile(manidVal)
 	{
 		var ss;
@@ -357,6 +355,7 @@ const generalSrc = () => {
 		});//end ajax
 	}
 
+	// get time
 	const setGMTTime = (offset) => {
 		let utc;
 		const d = new Date();
@@ -368,6 +367,7 @@ const generalSrc = () => {
 		return utc;
 	}
 
+	// setting time on the page
 	const setTime = (data) => {
 		const localDate = new Date(data.date)
 		document.getElementById("timezone").options[1].selected=true;  
@@ -390,6 +390,7 @@ const generalSrc = () => {
 		document.getElementsByName("needtrans")[1].checked=true;
 	}
 
+	//send
 	const sendReq = async (data) => {
 		const wid = document.getElementById("womanid");
 		wid.value=data.wId;
