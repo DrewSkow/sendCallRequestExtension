@@ -155,9 +155,10 @@ function formatDate (d) {
 		month,
 		year
 	}
-	const btn = document.getElementById("sendButton")
+	const btn = document.querySelector(".sendDataButton")
 	btn.innerHTML = "Начать рассылку";
-	btn.style.backgroundColor = "#333ADE"
+	btn.classList.remove("errorDate");
+	btn.disabled = false;
 
 	//next time need to work with Date.
 
@@ -168,7 +169,8 @@ function formatDate (d) {
 	else if((+dateForSend.month == (maxDate.getMonth()+1) && dateForSend.year == maxDate.getFullYear() && dateForSend.day <= maxDate.getDate())){port.postMessage({method: "sendDate", date: dateForSend}) }
 	else {
 		btn.innerHTML = "Выбрана некорректная дата";
-		btn.style.backgroundColor = "rgb(255, 80, 57)"
+		btn.classList.add("errorDate");
+		btn.disabled = true;
 	}
 
 	return day + ' / ' + month + ' / ' + year;

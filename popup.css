@@ -107,13 +107,7 @@ p{
     margin-left: -10px;
 }
 
-
-.btn{
-    width: 100%;
-    max-width: 240px;
-}
-
-#sendButton{
+.sendDataButton{
     width: 100%;
     margin: 0;
     height: 37px;
@@ -131,12 +125,20 @@ p{
     cursor: pointer;
 }
 
-#sendButton:hover{
+.sendDataButton:hover{
     background: rgba(51, 58, 222, 0.9);
 }
 
-#sendButton:active{
+.sendDataButton:active{
     background: rgba(51, 58, 222, 0.7);
+}
+
+.errorDate{
+    background: rgb(255, 80, 57);
+}
+
+.errorDate:hover{
+    background: rgba(255, 80, 57, 0.9);
 }
 
 /* switch button ========================== */

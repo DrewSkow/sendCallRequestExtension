@@ -1,4 +1,4 @@
-const sendBtn = document.getElementById("sendButton");
+const sendBtn = document.querySelector(".sendDataButton");
 const womenId = document.getElementById("i_w_id");
 const menData = document.getElementById("i_m_id");
 const quantity = document.getElementById("req_quantity");
