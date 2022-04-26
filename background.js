@@ -149,15 +149,21 @@ const script = async (p) => {
                             }
                             time.minute++;
                         } else if(data.menId.length>0 && sended==maxSend-1){
-                            setTimeout(()=> {
+                            if(isMultiPageOn){
+                                setTimeout(()=> {
+                                    data.menId.shift();
+                                    // time.day=0;
+                                    // time.hour=1;
+                                    // time.minute=1;
+                                    sended=0;
+                                    if(data.menId.length>0){openTabs()}  
+                                    chrome.storage.local.set({stopScr: false});
+                                }, 5000)
+                            }
+                            else {
                                 data.menId.shift();
-                                // time.day=0;
-                                // time.hour=1;
-                                // time.minute=1;
                                 sended=0;
-                                if(data.menId.length>0){openTabs()}  
-                                chrome.storage.local.set({stopScr: false});
-                            }, 5000)
+                            }
 
                         }
                     } else {p.postMessage({method: "dataNotReady"})} 
