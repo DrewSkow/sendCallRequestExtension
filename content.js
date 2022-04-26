@@ -24,6 +24,9 @@ const generalSrc = () => {
 				location.reload();
 			} else if(errEl[i].innerHTML.indexOf("Booking is full") == 0){
 				port.postMessage({method: "bookingError"});
+			} else if(errEl[i].innerHTML.indexOf("Number of invitations has exceeded the per day limit") == 0){
+				alert("Достигнут лимит отправки сообщений, програма отключена. Спасибо что используете нашу программу!");
+				chrome.storage.local.set({switchCallReq: false});
 			}
 		} 
 	}
@@ -36,7 +39,7 @@ const generalSrc = () => {
 		switch (msg.method) {
 			case "data" : {
 				if(checkFirstAsk===0){
-					sendReq(msg.dataForSend);
+					chrome.storage.local.get("switchCallReq", v => v.switchCallReq && sendReq(msg.dataForSend));
 					checkFirstAsk++;
 				}
 			}
@@ -416,5 +419,3 @@ const generalSrc = () => {
 		}, 3000)	
 	}
 }
-
-

@@ -17,10 +17,8 @@ const port = chrome.runtime.connect({name: "exchangeData"});
 
 //switcher 
 chrome.storage.local.get("switchCallReq", v => switchButton.checked = v.switchCallReq)
-const switchClick = (e) => {
-    chrome.storage.local.set({switchCallReq: e.target.checked})
-}
-switchButton.addEventListener("click", switchClick);
+
+switchButton.addEventListener("click", e => chrome.storage.local.set({switchCallReq: e.target.checked}));
 
 //set and get data (localstorage)
 wrapper.addEventListener("input", (e) => {

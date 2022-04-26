@@ -48,6 +48,11 @@ function randomInteger(min, max) {
     return Math.round(rand);
 }
 
+const openTabs = () => {
+    for(let i = 0; i<multiPage;i++){
+        chrome.tabs.create({active: false, url:"http://www.charmdate.com/clagt/lovecall/add.php"});
+    }
+} 
 
 const script = async (p) => {
     if(p.name == "exchangeData"){
@@ -112,20 +117,14 @@ const script = async (p) => {
                             checkErrors.error = 0; 
                             checkErrors.checkSended = 0;
                             time.month = 0;
-                        }
-
-                        const openTabs = () => {
-                            for(let i = 0; i<multiPage;i++){
-                                chrome.tabs.create({active: false, url:"http://www.charmdate.com/clagt/lovecall/add.php"});
-                            }
-                        }                        
+                        }                       
 
                         if(isMultiPageOn && !!multiPage){
                             openTabs();
                             chrome.storage.local.set({multiMode: false});
                         }
 
-                        if(data.menId.length>0 && sended<maxSend-1){
+                        if((data.menId.length>0 && sended<maxSend ) || (data.menId.length>0 && sended<maxSend-1 && isMultiPageOn )){
                             
                             dataForSend = {
                                 wId: data.wId,
