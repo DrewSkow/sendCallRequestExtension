@@ -66,7 +66,7 @@ const script = async (p) => {
 
                 if(msg.method == "sended"){
                     sended++;
-                    if(sended == maxSend-1){
+                    if(sended == maxSend-1 && isMultiPageOn){
                         chrome.storage.local.set({stopScr: true});
                         chrome.tabs.query({active:false}, v => {
                             v.forEach(item => chrome.tabs.remove(item.id));
@@ -99,7 +99,7 @@ const script = async (p) => {
                         phone = randomInteger(1000009, 9999999)
                     }
                     checkClear = true;
-                    chrome.storage.local.set({stopScr: false})
+                    isMultiPageOn && chrome.storage.local.set({stopScr: false})
                 }
 
                 if(msg.method == "askData") {
