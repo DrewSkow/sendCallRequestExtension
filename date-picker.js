@@ -175,3 +175,4 @@ function formatDate (d) {
 
 	return day + ' / ' + month + ' / ' + year;
 }
+

@@ -93,6 +93,6 @@ const sendData = async () => {
   await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
 }
 
-sendBtn.addEventListener('click', sendData)
+sendBtn.addEventListener('click', sendData);
 
 
