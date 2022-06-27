@@ -72,6 +72,9 @@ multiPageBtn.addEventListener('click', e => chrome.storage.local.set({multiMode:
 
 //send data
 const sendData = async () => {
+    await chrome.storage.local.get("date", v => console.log(v.date));
+    await chrome.storage.local.get("date", v => date = !!v.date && (new Date(v.date.selectedYear, v.date.selectedMonth, v.date.selectedDay)));
+    console.log(date);
     await chrome.tabs.query({url:["http://www.charmdate.com/clagt/lovecall/add.php", "http://www.charmdate.com/clagt/lovecall/add.php?act=saveandsubmit"]}, v =>{
         v.length == 0 && port.postMessage({method: "createTab"});
         v.length != 0 && port.postMessage({method: "runScriptInTab", tabid: v[0].id})
@@ -81,16 +84,16 @@ const sendData = async () => {
     const qV = quantity.value
     const hour = +timeH.value;
     const minute = +timeM.value;
-    const data = {menId, wId, qV, hour, minute}
+    const data = {menId, wId, qV, hour, minute}    
 
     await port.postMessage({method: "multiPage", multiPages: multiPageInput.value});
 
     if(!!wId && !!menId && !!qV){
-        await port.postMessage({method: "sendData", data, date})
+        setTimeout(() => {port.postMessage({method: "sendData", data, date})},1000)   
     } else{
         alert("одно из полей не заполнено")
     }
-  await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
+//   await chrome.storage.local.remove(["i_w_id", "i_m_id", "req_quantity", "minute", "hour", "date"]);
 }
 
 sendBtn.addEventListener('click', sendData);

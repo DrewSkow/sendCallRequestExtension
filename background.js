@@ -1,5 +1,3 @@
-console.log("back is started");
-chrome.storage.local.get(console.log);
 //check switch on/off
 let isOn;
 let isMultiPageOn;
@@ -58,7 +56,6 @@ const script = async (p) => {
     if(p.name == "exchangeData"){
         p.onMessage.addListener(msg => {
             if(isOn){
-                console.log(msg)
                 msg.method == "createTab" && chrome.tabs.create({active: false, index:5, url:"http://www.charmdate.com/clagt/lovecall/add.php"});
 
                 msg.method == "runScriptInTab" && chrome.tabs.reload(msg.tabid);
@@ -98,6 +95,7 @@ const script = async (p) => {
 
                 if (msg.method == "sendData" ) {
                     data = msg.data;
+                    console.log(msg.date);
                     date = new Date(msg.date);
                     if(checkNewLady !=data.wId){
                         checkNewLady = data.wId;
@@ -117,20 +115,20 @@ const script = async (p) => {
                             checkErrors.error = 0; 
                             checkErrors.checkSended = 0;
                             time.month = 0;
-                        }                       
+                        }                        
 
                         if(isMultiPageOn && !!multiPage){
                             openTabs();
                             chrome.storage.local.set({multiMode: false});
                         }
 
-                        if((data.menId.length>0 && sended<maxSend ) || (data.menId.length>0 && sended<maxSend-1 && isMultiPageOn )){
+                        if((data.menId.length > 0 && sended < maxSend ) || (data.menId.length>0 && sended<maxSend-1 && isMultiPageOn )){
                             
                             dataForSend = {
                                 wId: data.wId,
                                 mId: data.menId[0],
 
-                                date: date.setDate(date.getDate()-time.day),
+                                date: date.setDate(!!time.day ? (date.getDate()-time.day) : date.getDate()),
                                 minute: checkClear?data.minute:time.minute,
                                 hour: checkClear?data.hour+1:time.hour,
 
@@ -147,7 +145,7 @@ const script = async (p) => {
                                 checkClear = false;
                             }
                             time.minute++;
-                        } else if(data.menId.length>0 && sended==maxSend-1){
+                        } else if(data.menId.length>0 && sended==maxSend){
                             if(isMultiPageOn){
                                 setTimeout(()=> {
                                     data.menId.shift();
@@ -163,7 +161,6 @@ const script = async (p) => {
                                 data.menId.shift();
                                 sended=0;
                             }
-
                         }
                     } else {p.postMessage({method: "dataNotReady"})} 
                 }

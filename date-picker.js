@@ -53,7 +53,7 @@ prev_mth_element.addEventListener('click', goToPrevMonth);
 
 // FUNCTIONS
 function toggleDatePicker (e) {
-	if (!checkEventPathForClass(e.path, 'dates')) {
+	if (!checkEventPathForClass(e.composedPath(), 'dates')) {
 		dates_element.classList.toggle('active');
 	}
 }
@@ -119,7 +119,7 @@ function populateDates (e) {
 
 			selected_date_element.textContent = formatDate(selectedDate);
 			selected_date_element.dataset.value = selectedDate;
-			chrome.storage.local.set({date: {selectedDay, selectedMonth,selectedYear}});
+			chrome.storage.local.set({date: {selectedDay, selectedMonth, selectedYear}});
 			populateDates();
 		});
 
@@ -151,9 +151,9 @@ function formatDate (d) {
 	let year = d.getFullYear();
 
 	const dateForSend = {
-		day,
-		month,
-		year
+		selectedDay: day,
+		selectedMonth: month,
+		selectedYear: year,
 	}
 	const btn = document.querySelector(".sendDataButton")
 	btn.innerHTML = "Начать рассылку";
@@ -162,12 +162,13 @@ function formatDate (d) {
 
 	//next time need to work with Date.
 
-	if(+dateForSend.month == (date.getMonth()+1) && dateForSend.year == date.getFullYear() && dateForSend.day >= date.getDate()){
-		port.postMessage({method: "sendDate", date: dateForSend})
-	} else if (+dateForSend.month > (date.getMonth()+1) && dateForSend.year >= date.getFullYear() &&
-	+dateForSend.month < (maxDate.getMonth()+1) && dateForSend.year <= maxDate.getFullYear()) { port.postMessage({method: "sendDate", date: dateForSend}) }
-	else if((+dateForSend.month == (maxDate.getMonth()+1) && dateForSend.year == maxDate.getFullYear() && dateForSend.day <= maxDate.getDate())){port.postMessage({method: "sendDate", date: dateForSend}) }
-	else {
+	if(+dateForSend.selectedMonth == (date.getMonth()+1) && dateForSend.selectedYear == date.getFullYear() && dateForSend.selectedDay >= date.getDate()){
+		chrome.storage.local.set({date: {selectedDay, selectedMonth, selectedYear}});
+	} else if (+dateForSend.selectedMonth > (date.getMonth()+1) && dateForSend.selectedYear >= date.getFullYear() && +dateForSend.selectedMonth < (maxDate.getMonth()+1) && dateForSend.selectedYear <= maxDate.getFullYear()) { 
+		chrome.storage.local.set({date: {selectedDay, selectedMonth, selectedYear}}); 
+	} else if((+dateForSend.selectedMonth == (maxDate.getMonth()+1) && dateForSend.selectedYear == maxDate.getFullYear() && dateForSend.selectedDay <= maxDate.getDate())){
+		chrome.storage.local.set({date: {selectedDay, selectedMonth, selectedYear}}); 
+	} else {
 		btn.innerHTML = "Выбрана некорректная дата";
 		btn.classList.add("errorDate");
 		btn.disabled = true;

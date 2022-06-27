@@ -22,6 +22,8 @@ const generalSrc = () => {
 			if(errEl[i].innerHTML.indexOf("Male member") == 0){
 				port.postMessage({method: "skipMan"});
 				location.reload();
+			} else if(errEl[i].innerHTML.indexOf("Please indicate the") > -1){
+				location.reload();
 			} else if(errEl[i].innerHTML.indexOf("Booking is full") == 0){
 				port.postMessage({method: "bookingError"});
 			} else if(errEl[i].innerHTML.indexOf("Number of invitations has exceeded the per day limit") == 0){
@@ -138,7 +140,7 @@ const generalSrc = () => {
 			});
 		
 			return timezonelist;
-	}
+		}
 	}
 
 	function createOptions(code){
@@ -379,7 +381,7 @@ const generalSrc = () => {
 		const time = setGMTTime(0);
 		time.setMonth(time.getMonth()+6);
 
-		if(!!data?.date){
+		if(!!data.date){
 			document.getElementById("calldate").value=`${localDate.getFullYear()}-${checkZeroBefore('m', localDate.getMonth()) }-${checkZeroBefore("d", localDate.getDate())}`;
 		} else {
 			document.getElementById("calldate").value=`${time.getFullYear()}-${checkZeroBefore("m", time.getMonth())}-${checkZeroBefore("d",time.getDate())}`;
@@ -395,8 +397,9 @@ const generalSrc = () => {
 	}
 
 	//send
-	const sendReq = async (data) => {
 
+	const sendReq = async (data) => {
+ 
 		const wid = document.getElementById("womanid");
 		wid.value=data.wId;
 		await getWomanProfile(data.wId);
@@ -405,9 +408,18 @@ const generalSrc = () => {
 		mid.value=data.mId;
 		await getManProfile(data.mId);
 
-		setTimeout( () => {
-			setTime(data);
-		}, 2000);
+		let isLoaded = document.getElementById("manphoto");
+
+		const settingTime = () => {
+			isLoaded = document.getElementById("manphoto");
+			if(!!isLoaded){
+				setTimeout(setTime(data), 500)
+			} else {
+				setTimeout(settingTime, 300)
+			}
+		}
+
+		settingTime();
 
 		setTimeout( () => {
 			chrome.storage.local.get("stopScr", v => {
